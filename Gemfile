@@ -33,6 +33,7 @@ end
 
 group :cucumber do
     gem 'capybara'
+    #gem 'webrat'
     gem 'database_cleaner'
     gem 'cucumber-rails'
     gem 'cucumber'

@@ -1,4 +1,8 @@
 Roadie::Application.routes.draw do
+  get "points/calculate"
+
+  get "points/correct"
+
   get "home/index"
   root :to => "home#index"
   

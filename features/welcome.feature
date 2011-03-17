@@ -3,7 +3,16 @@ Feature: Welcoming page
 	People should be able to
 	Read a list of possible actions
 	
-Scenario: Show welcome message
+Scenario: Displaying a welcome message
 	When I go to the home page
 	Then I should see "Hello there!"
 	
+Scenario: Going to the calculate points page
+	When I go to the home page
+	And I follow "Calculate points"
+	Then I should see "Point calculation"
+
+Scenario: Going to the calculate corrected points page
+	When I go to the home page
+	And I follow "Calculate corrected points"
+	Then I should see "Point correction"
