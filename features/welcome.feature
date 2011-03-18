@@ -11,8 +11,3 @@ Scenario: Going to the calculate points page
 	When I go to the home page
 	And I follow "Calculate points"
 	Then I should see "Point calculation"
-
-Scenario: Going to the calculate corrected points page
-	When I go to the home page
-	And I follow "Calculate corrected points"
-	Then I should see "Point correction"

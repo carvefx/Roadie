@@ -1,12 +1,9 @@
 Roadie::Application.routes.draw do
-  get "points/calculate"
-
-  get "points/correct"
-
-  get "home/index"
+  match "/points/calculate" => "points#calculate"
+  resources :points
+  
   root :to => "home#index"
   
-  match 'home' => "home#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
