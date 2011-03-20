@@ -5,9 +5,11 @@
     <th>Name</th>
     <th>Distance</th>
     <th>Elevation</th>
+		<th>Height</th>
     <th>D1</th>
     <th>D2</th>
     <th>Section</th>
+		<th>Section length</th>
     <th></th>
     <th></th>
     <th></th>
@@ -18,9 +20,11 @@
     <td><%= point.name %></td>
     <td><%= point.distance %></td>
     <td><%= point.elevation %></td>
+		<td><%= point.height %></td>
     <td><%= point.d1 %></td>
     <td><%= point.d2 %></td>
     <td><%= point.section %></td>
+		<td><%= point.section_length %></td>
     <td><%= link_to 'Show', point %></td>
     <td><%= link_to 'Edit', edit_point_path(point) %></td>
     <td><%= link_to 'Destroy', point, :confirm => 'Are you sure?', :method => :delete %></td>
