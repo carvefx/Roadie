@@ -11,6 +11,11 @@
 </p>
 
 <p>
+  <b>Kilometric position:</b>
+  <%= @point.kilometric_position %>
+</p>
+
+<p>
   <b>Elevation:</b>
   <%= @point.elevation %>
 </p>
@@ -28,16 +33,6 @@
 <p>
   <b>D2:</b>
   <%= @point.d2 %>
-</p>
-
-<p>
-  <b>Section:</b>
-  <%= @point.section %>
-</p>
-
-<p>
-  <b>Section length:</b>
-  <%= @point.section_length %>
 </p>
 
 <%= link_to 'Edit', edit_point_path(@point) %> |

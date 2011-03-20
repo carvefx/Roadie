@@ -16,8 +16,25 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
+    <%= f.label :section %><br />
+    <%= f.select(:section_id, [["Select a Section name", 0]] + @sections.collect {|p| [ p.name, p.id ] }) %>
+  </div>
+
+  <div class="field">
     <%= f.label :distance %><br />
     <%= f.text_field :distance %>
+  </div>
+	<div class="field">
+    <%= f.label :distance_corrected %><br />
+    <%= f.text_field :distance_corrected %>
+  </div>
+	<div class="field">
+    <%= f.label :kilometric_position %><br />
+    <%= f.text_field :kilometric_position %>
+  </div>
+	<div class="field">
+    <%= f.label :kilometric_position_corrected %><br />
+    <%= f.text_field :kilometric_position_corrected %>
   </div>
   <div class="field">
     <%= f.label :elevation %><br />
@@ -34,15 +51,6 @@
   <div class="field">
     <%= f.label :d2 %><br />
     <%= f.text_field :d2 %>
-  </div>
-  <div class="field">
-    <%= f.label :section %><br />
-    <%= f.text_field :section %>
-  </div>
-
-	<div class="field">
-    <%= f.label :section_length %><br />
-    <%= f.text_field :section_length %>
   </div>
 
   <div class="actions">

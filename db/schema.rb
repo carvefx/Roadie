@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110320164028) do
+ActiveRecord::Schema.define(:version => 20110320183433) do
 
   create_table "points", :force => true do |t|
     t.string   "name"
@@ -18,12 +18,20 @@ ActiveRecord::Schema.define(:version => 20110320164028) do
     t.decimal  "elevation"
     t.decimal  "d1"
     t.decimal  "d2"
-    t.string   "section"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "section_length"
     t.decimal  "height"
     t.string   "kilometric_position"
+    t.integer  "section_id"
+    t.decimal  "distance_corrected"
+    t.string   "kilometric_position_corrected"
+  end
+
+  create_table "sections", :force => true do |t|
+    t.string   "name"
+    t.decimal  "length"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

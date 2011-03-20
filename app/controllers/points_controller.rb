@@ -3,30 +3,82 @@ class PointsController < ApplicationController
   
   # GET /calculate
   def calculate
-    @point = Point.find(params[:id])
+    @points = Point.all
+    @sections = Section.all
+    # loop through all the points
+    @points.each do |point|
     
-    # calculate the ground elevation if none is already present
-    if @point.elevation.nil?
+      # calculate the ground elevation if none is already present
+      if point.elevation.nil?
+        
+        # calculate and round to two decimals
+        elev = point.d1 / point.d2 * point.height
+        elev = (elev * 10**2).round.to_f / 10**2
+        
+        # save to the database
+        point.elevation = elev
+        point.save
+              
+        
+      end
       
-      # calculate and round to two decimals
-      elev = @point.d1 / @point.d2 * @point.height
-      elev = (elev * 10**2).round.to_f / 10**2
+      # calculate the current kilmetric position
       
-      # save to the database
-      @point.elevation = elev
-      @point.save
-      
-      # return us to the index page
-      redirect_to(points_url, :notice => 'Elevation calculated')
+    # if point.kilometric_position.blank?
+    #       
+    #       previous_point = @points[@points.index(point)-1]
+    #       @kilometric_position = '0+' + previous_point.distance.to_s
+    # end     
       
     end
+    
+    
+
+    
+    @sections.each do |section|
+      
+      section_points_number = section.points.count
+      section_length = section.length
+      
+      section.points.each do |point| 
+          total_distance = 0
+          if point.distance_corrected.blank?
+          
+            total_distance = total_distance + point.distance
+     
+            # calculate total error for a section
+    	      total_error = total_distance - section_length
+    	    
+    	      # exclude starting and final points for error calculation    	      
+    	      if point.name = 'A' || point.name = 'B'
+    	         section_count = section.points.count - 1
+    	      end
+    	      
+    	      # calculate error for each point
+    	      error = total_error / section_points_number
+    	      error = (error * 10**2).round.to_f / 10**2
+    	    
+    	    
+    	      # save to database
+      	    point.distance_corrected = point.distance + error
+      	    point.save
+      	    
+      	    
+  	      end
+    	  end   	  	  
+  	    
+    end
+    
+    # return us to the index page
+    # redirect_to(points_url, :notice => 'Elevation calculated')
   end
   
   # GET /points
   # GET /points.xml
   def index
     @points = Point.all
-
+   
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @points }
@@ -48,7 +100,7 @@ class PointsController < ApplicationController
   # GET /points/new.xml
   def new
     @point = Point.new
-    
+    @sections = Section.all
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @point }
@@ -58,6 +110,7 @@ class PointsController < ApplicationController
   # GET /points/1/edit
   def edit
     @point = Point.find(params[:id])
+    @sections = Section.all
   end
 
   # POST /points
@@ -80,7 +133,7 @@ class PointsController < ApplicationController
   # PUT /points/1.xml
   def update
     @point = Point.find(params[:id])
-
+    
     respond_to do |format|
       if @point.update_attributes(params[:point])
         format.html { redirect_to(@point, :notice => 'Point was successfully updated.') }

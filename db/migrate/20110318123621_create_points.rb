@@ -7,7 +7,7 @@ class CreatePoints < ActiveRecord::Migration
      t.decimal :d1
      t.decimal :d2
      t.string :section
-  
+     t.references
      t.timestamps
   end
   end

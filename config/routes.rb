@@ -1,5 +1,7 @@
 Roadie::Application.routes.draw do
-  match 'calculate/:id' => 'points#calculate'
+  resources :sections
+
+  match 'calculate' => 'points#calculate'
   resources :points
   
   root :to => "home#index"

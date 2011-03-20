@@ -1,5 +1,4 @@
 <h1>Point calculation</h1>
-<p id="notice"><%= notice %></p>
-<%= @point.height %> <br/>
-<%= @point.d1 %> <br/>
-<%= @point.d2 %> <br/>
+<% @section.points.each do |point| %>
+	<%= point.distance %>
+<% end %>
