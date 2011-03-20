@@ -3,6 +3,8 @@
 <p>Roadie currently supports the following actions</p>
 
 <ul>
-	<li><%= link_to "Add data", new_point_path %></li>
-	<li><%= link_to "Calculate points", { :controller => "points", :action => "index" } %></li>
+	<li><%= link_to "Add sections", new_section_path %></li>
+	<li><%= link_to "View sections", sections_path %></li>
+	<li><%= link_to "Add points", new_point_path %></li>
+	<li><%= link_to "View & calculate points", { :controller => "points", :action => "index" } %></li>
 </ul>
