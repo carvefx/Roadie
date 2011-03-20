@@ -1,5 +1,5 @@
 <h1>Listing points</h1>
-
+<p id="notice"><%= notice %></p>
 <table>
   <tr>
     <th>Name</th>
@@ -13,6 +13,7 @@
     <th></th>
     <th></th>
     <th></th>
+		<th></th>
   </tr>
 
 <% @points.each do |point| %>
@@ -25,6 +26,7 @@
     <td><%= point.d2 %></td>
     <td><%= point.section %></td>
 		<td><%= point.section_length %></td>
+		<td><%= link_to 'Calculate', :controller => "points", :action => "calculate", :id => point %></td>
     <td><%= link_to 'Show', point %></td>
     <td><%= link_to 'Edit', edit_point_path(point) %></td>
     <td><%= link_to 'Destroy', point, :confirm => 'Are you sure?', :method => :delete %></td>

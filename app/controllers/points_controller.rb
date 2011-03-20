@@ -3,6 +3,23 @@ class PointsController < ApplicationController
   
   # GET /calculate
   def calculate
+    @point = Point.find(params[:id])
+    
+    # calculate the ground elevation if none is already present
+    if @point.elevation.nil?
+      
+      # calculate and round to two decimals
+      elev = @point.d1 / @point.d2 * @point.height
+      elev = (elev * 10**2).round.to_f / 10**2
+      
+      # save to the database
+      @point.elevation = elev
+      @point.save
+      
+      # return us to the index page
+      redirect_to(points_url, :notice => 'Elevation calculated')
+      
+    end
   end
   
   # GET /points
