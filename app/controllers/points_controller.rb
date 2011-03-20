@@ -34,33 +34,42 @@ class PointsController < ApplicationController
     
     
 
-    
+
     @sections.each do |section|
       
       section_points_number = section.points.count
       section_length = section.length
+      total_distance = 0
+      
+      # calculate total distance
+      section.points.each do |point|
+        total_distance += point.distance
+      end
+      
+      # calculate total error for a section
+      total_error = total_distance - section_length
       
       section.points.each do |point| 
-          total_distance = 0
-          if point.distance_corrected.blank?
-          
-            total_distance = total_distance + point.distance
-     
-            # calculate total error for a section
-    	      total_error = total_distance - section_length
-    	    
-    	      # exclude starting and final points for error calculation    	      
-    	      if point.name = 'A' || point.name = 'B'
-    	         section_count = section.points.count - 1
-    	      end
+
+          if point.distance_corrected.nil?      
+    	          	    
+    	      
     	      
     	      # calculate error for each point
     	      error = total_error / section_points_number
     	      error = (error * 10**2).round.to_f / 10**2
     	    
     	    
-    	      # save to database
+    	      # construct final variable
       	    point.distance_corrected = point.distance + error
+      	    
+      	    # exclude starting and final points for error calculation    	      
+    	      if point.name.eql? "A" or point.name.eql? "B"
+    	          section_points_number = section.points.count - 1
+    	          point.distance_corrected = point.distance
+    	      end
+    	      
+    	      # save to database
       	    point.save
       	    
       	    
@@ -68,9 +77,9 @@ class PointsController < ApplicationController
     	  end   	  	  
   	    
     end
-    
+
     # return us to the index page
-    # redirect_to(points_url, :notice => 'Elevation calculated')
+    redirect_to(points_url, :notice => 'Elevation calculated')
   end
   
   # GET /points
