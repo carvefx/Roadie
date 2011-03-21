@@ -1,5 +1,7 @@
 body { background-color: #fff; color: #333; }
 
+hr{border:none;  border-bottom:1px dotted #ddd; height:1px;}
+
 th{
 	background:#ddd;
 	padding:10px;

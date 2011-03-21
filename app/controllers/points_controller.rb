@@ -45,7 +45,7 @@ class PointsController < ApplicationController
       section.points.each do |point|
         total_distance += point.distance
       end
-      
+      @total_distance = total_distance
       # calculate total error for a section
       total_error = total_distance - section_length
       
@@ -58,8 +58,7 @@ class PointsController < ApplicationController
     	      # calculate error for each point
     	      error = total_error / section_points_number
     	      error = (error * 10**2).round.to_f / 10**2
-    	    
-    	    
+    	        	    
     	      # construct final variable
       	    point.distance_corrected = point.distance + error
       	    
@@ -77,9 +76,9 @@ class PointsController < ApplicationController
     	  end   	  	  
   	    
     end
-
+    
     # return us to the index page
-    redirect_to(points_url, :notice => 'Elevation calculated')
+    # redirect_to(points_url, :notice => 'Elevation calculated')
   end
   
   # GET /points

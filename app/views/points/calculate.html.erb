@@ -1,4 +1,48 @@
 <h1>Point calculation</h1>
-<%= @section_length %>
-<%= @total_error %>
-<%= @error %>
+<%=	javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" %>
+<%
+i = 0 
+j = 0
+%>
+
+<h2>Output for error calculations</h2>
+<% @sections.each do |section| %>
+	<% 
+	i+= 1 
+	total_points = section.points.count	
+	%>
+	<h3>Section	<i><%= section.name %></i></h3>
+	<hr>
+	<p>\( \Sigma d_{Al_<%=i%>} = Al_<%=i%> \)</p>
+	<p>
+		\( \Sigma d_{Al_<%=i%>}= \)
+		<% section.points.each do |point| %>
+			
+			<%
+			# exclude starting and final points for error calculation    	      
+      if point.name.eql? "A" or point.name.eql? "B"
+          total_points = section.points.count - 1
+      end
+			%>
+			<% j += 1 %>
+			<% # if the current point isn't the last point %>
+			<% if !j.eql? total_points %>
+				<%= point.distance %> +
+			<% else %>
+				<%= point.distance %>
+			<% end %>
+			
+				
+		<% end %>
+		= <%= @total_distance%>
+		</p>
+		<p>
+			\( Al_<%=i%>= \) <%= section.length %>
+		</p>
+		<% 
+		# prepare the error output
+		total_error = @total_distance - section.length
+		error = total_error / total_points
+		%>
+		<p>e = \( \frac{<%= @total_distance %> - <%= section.length %>}{<%= total_points %>} \) = <%= error %></p>
+<% end %>
