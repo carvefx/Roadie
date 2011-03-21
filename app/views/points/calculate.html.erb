@@ -8,21 +8,19 @@ j = 0
 <h2>Output for error calculations</h2>
 <% @sections.each do |section| %>
 	<% 
-	i+= 1 
 	total_points = section.points.count	
 	%>
 	<h3>Section	<i><%= section.name %></i></h3>
 	<hr>
-	<p>\( \Sigma d_{Al_<%=i%>} = Al_<%=i%> \)</p>
+	<p>\( \Sigma d_{<%= section.name %>} = <%= section.name %> \)</p>
 	<p>
-		\( \Sigma d_{Al_<%=i%>}= \)
+		\( \Sigma d_{<%= section.name %>}= \)
 		<% section.points.each do |point| %>
-			
 			<%
 			# exclude starting and final points for error calculation    	      
-      if point.name.eql? "A" or point.name.eql? "B"
-          total_points = section.points.count - 1
-      end
+	    if point.name.eql? "A" or point.name.eql? "B"
+	        @total_points_calc = section.points.count - 1
+	    end	
 			%>
 			<% j += 1 %>
 			<% # if the current point isn't the last point %>
@@ -32,17 +30,19 @@ j = 0
 				<%= point.distance %>
 			<% end %>
 			
-				
 		<% end %>
 		= <%= @total_distance%>
 		</p>
 		<p>
-			\( Al_<%=i%>= \) <%= section.length %>
+			\( <%= section.name %>= \) <%= section.length %>
 		</p>
-		<% 
+		<%
+		
+		
+		
 		# prepare the error output
 		total_error = @total_distance - section.length
-		error = total_error / total_points
+		error = total_error / @total_points_calc
 		%>
-		<p>e = \( \frac{<%= @total_distance %> - <%= section.length %>}{<%= total_points %>} \) = <%= error %></p>
+		<p>e = \( \frac{<%= @total_distance %> - <%= section.length %>}{<%= @total_points_calc %>} \) = <%= error %></p>
 <% end %>
