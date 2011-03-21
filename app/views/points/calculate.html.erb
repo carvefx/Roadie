@@ -46,3 +46,4 @@ j = 0
 		%>
 		<p>e = \( \frac{<%= @total_distance %> - <%= section.length %>}{<%= @total_points_calc %>} \) = <%= error %></p>
 <% end %>
+<%= link_to "View all points", { :controller => "points", :action => "index" } %>
