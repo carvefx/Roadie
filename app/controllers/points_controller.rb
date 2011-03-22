@@ -23,18 +23,18 @@ class PointsController < ApplicationController
       end
       
         # calculate the current kilometric position
-        if point.kilometric_position.blank?
+        
            km += point.distance
            point.kilometric_position = '0+' + km.to_s    
-        end  
+        
        
         # calculate the corrected kilometric position
-        if point.kilometric_position_corrected.blank?
+        
             error = point.distance_corrected - point.distance
-            km += point.distance
-            km += error
-            point.kilometric_position_corrected = '0+' + km.to_s    
-          end 
+            km_c = km
+            km_c += error
+            point.kilometric_position_corrected = '0+' + km_c.to_s
+  
         
       # save to the database      
       point.save
