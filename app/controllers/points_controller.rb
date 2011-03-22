@@ -6,6 +6,7 @@ class PointsController < ApplicationController
     @points = Point.all
     @sections = Section.all
     km = 0
+    km_c = 0
     # loop through all the points
     @points.each do |point|
     
@@ -13,30 +14,30 @@ class PointsController < ApplicationController
       if point.elevation.nil?
         
         # calculate and round to two decimals
-        elev = point.d1 / point.d2
-        elev = elev + point.height - 1 
-        elev = (elev * 10**2).round.to_f / 10**2    
-              
+        if point.d1 and point.d2
+          elev = point.d1 / point.d2
+          elev = elev + point.height - 1 
+          elev = (elev * 10**2).round.to_f / 10**2
+          point.elevation = elev
+        end
       end
-      # calculate the current kilmetric position
-
-       if point.kilometric_position.blank?
+      
+        # calculate the current kilometric position
+        if point.kilometric_position.blank?
            km += point.distance
            point.kilometric_position = '0+' + km.to_s    
-           point.save
-       end
+        end  
        
-       if point.kilometric_position_corrected.blank?
-       
-          distance_corrected = point.distance_corrected.to_s
-          point.kilometric_position_corrected = '0+' + distance_corrected
-       
-       end
-       
-          
-       # save to the database
-       point.elevation = elev
-       point.save
+        # calculate the corrected kilometric position
+        if point.kilometric_position_corrected.blank?
+            error = point.distance_corrected - point.distance
+            km += point.distance
+            km += error
+            point.kilometric_position_corrected = '0+' + km.to_s    
+          end 
+        
+      # save to the database      
+      point.save
     end
     
     
