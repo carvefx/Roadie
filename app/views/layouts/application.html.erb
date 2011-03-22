@@ -8,6 +8,7 @@
 </head>
 <body>
 <%= yield %>
-
+<hr>
+<%= link_to "View Sections", { :controller => "sections", :action => "index" } %> | <%= link_to "View Points", { :controller => "points", :action => "index" } %>
 </body>
 </html>
