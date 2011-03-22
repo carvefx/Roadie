@@ -17,7 +17,7 @@
   </tr>
 
 <% @points.each do |point| %>
-  <tr>
+  <tr class="<%= cycle("even", "odd") %>">
     <td><%= point.name %></td>
 		<td><%= point.section_id %></td>
     <td><%= point.distance %></td>

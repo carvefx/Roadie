@@ -6,7 +6,13 @@ th{
 	background:#ddd;
 	padding:10px;
 }
+tr.even td{
+	background-color:#e9f3f3;
+}
 
+tr.odd td{
+	background-color:#fff;
+}
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size:   13px;

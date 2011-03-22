@@ -12,7 +12,8 @@ class PointsController < ApplicationController
       if point.elevation.nil?
         
         # calculate and round to two decimals
-        elev = point.d1 / point.d2 * point.height
+        elev = point.d1 / point.d2
+        elev = elev + point.height - 1 
         elev = (elev * 10**2).round.to_f / 10**2
         
         # save to the database
@@ -37,7 +38,7 @@ class PointsController < ApplicationController
 
     @sections.each do |section|
       
-      section_points_number = section.points.count
+      section_points_number = section.points.count - 1
       section_length = section.length
       total_distance = 0
       
@@ -45,14 +46,13 @@ class PointsController < ApplicationController
       section.points.each do |point|
         total_distance += point.distance
       end
-      @total_distance = total_distance
+      
       # calculate total error for a section
       total_error = total_distance - section_length
       
-      section.points.each do |point| 
-
-          if point.distance_corrected.nil?      
-    	          	    
+      section.points.each_with_index do |point, index| 
+          
+          if point.distance_corrected.nil?          	    
     	      
     	      
     	      # calculate error for each point
@@ -63,9 +63,8 @@ class PointsController < ApplicationController
       	    point.distance_corrected = point.distance + error
       	    
       	    # exclude starting and final points for error calculation    	      
-    	      if point.name.eql? "A" or point.name.eql? "B"
-    	          section_points_number = section.points.count - 1
-    	          point.distance_corrected = point.distance
+    	      if index.eql? 0 or point.name.eql? "A" or point.name.eql? "B"
+    	        point.distance_corrected = point.distance
     	      end
     	      
     	      # save to database
