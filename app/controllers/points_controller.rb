@@ -114,7 +114,6 @@ class PointsController < ApplicationController
   # GET /points/new.xml
   def new
     @point = Point.new
-    @sections = Section.all
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @point }
