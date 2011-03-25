@@ -1,0 +1,9 @@
+<% section.points.each_with_index do |point, index| %>
+		<%= 				
+		 # if this isn't the first section and the point.distance is 0
+      sindex != 0 and point.distance == 0 ? point.distance = nil : point.distance = point.distance
+
+		 # add a + after each point that isn't the last
+		 index != @total_points_calc ? point.distance.to_s + ' +' : point.distance
+		%>
+<% end %>

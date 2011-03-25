@@ -3,35 +3,25 @@
 
 <h2>Output for error calculations</h2>
 
-<%
-@sections.each_with_index do |section, sindex|
-	
-	# Retrieve our values
+<% @sections.each_with_index do |section, sindex| %>
+
+	<% # Retrieve our values
 	total_distance = @total_distances[sindex]
 	@total_points_calc = @total_points_sections[sindex]
 	total_points = section.points.count
+	error = @errors[sindex]
+	%>
 	
-%>
 	<h3>Section	<i><%= section.name %></i></h3>
 	<hr>
-	<p>\( \Sigma d_{<%= section.name %>} = <%= section.name %> \)</p>
 	<p>
-		\( \Sigma d_{<%= section.name %>}= \)
-		<% 
-		section.points.each_with_index do |point, index| %>
-				<%= 				
-				 # if this isn't the first section and the point.distance is 0
-         sindex != 0 and point.distance == 0 ? point.distance = nil : point.distance = point.distance
-
-				 # add a + after each point that isn't the last
-				 index != @total_points_calc ? point.distance.to_s + ' +' : point.distance
-				%>
-		<% end %>
-		= <%= total_distance%>
+		\( \Sigma d_{<%= section.name %>} = <%= section.name %> \)
 	</p>
 	<p>
-	\( <%= section.name %>= \) <%= section.length %>
+		\( \Sigma d_{<%= section.name %>}= \) <%= render :partial => 'points/error', :locals => {:section => section, :sindex => sindex} %> = <%= total_distance %>			
 	</p>
-	<p>e = \( \frac{<%= total_distance %> - <%= section.length %>}{<%= @total_points_calc %>} \) = <%= @errors[sindex] %></p>
+	<p>
+		\( <%= section.name %>= \) <%= section.length %>
+	</p>
+	<p>e = \( \frac{<%= total_distance %> - <%= section.length %>}{<%= @total_points_calc %>} \) = <%= error %></p>
 <% end %>
-
