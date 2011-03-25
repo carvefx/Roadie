@@ -2,47 +2,36 @@
 <%=	javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" %>
 
 <h2>Output for error calculations</h2>
+
 <%
-@sections.each do |section|
-	@total_distance = 0
-	i = 0 
-	j = 0
-	# calculate total distance
-	section.points.each do |point|
-  	@total_distance += point.distance
-	end
-	@total_points = section.points.count	
+@sections.each_with_index do |section, sindex|
+	
+	# Retrieve our values
+	total_distance = @total_distances[sindex]
+	@total_points_calc = @total_points_sections[sindex]
+	total_points = section.points.count
+	
 %>
 	<h3>Section	<i><%= section.name %></i></h3>
 	<hr>
 	<p>\( \Sigma d_{<%= section.name %>} = <%= section.name %> \)</p>
 	<p>
 		\( \Sigma d_{<%= section.name %>}= \)
-		<% section.points.each do |point|
-			@total_points_calc = section.points.count - 1 
-			%>
-			<% j += 1 %>
-			<% # if the current point isn't the last point %>
-			<% if !j.eql? @total_points %>
-				<%= point.distance %> +
-			<% else %>
-				<%= point.distance %>
-			<% end %>
-			
+		<% 
+		section.points.each_with_index do |point, index| %>
+				<%= 				
+				 # if this isn't the first section and the point.distance is 0
+         sindex != 0 and point.distance == 0 ? point.distance = nil : point.distance = point.distance
+
+				 # add a + after each point that isn't the last
+				 index != @total_points_calc ? point.distance.to_s + ' +' : point.distance
+				%>
 		<% end %>
-		= <%= @total_distance%>
-		</p>
-		<p>
-			\( <%= section.name %>= \) <%= section.length %>
-		</p>
-		<%
-		
-		
-		
-		# prepare the error output
-		total_error = @total_distance - section.length
-		error = total_error / @total_points_calc
-		error = (error * 10**2).round.to_f / 10**2
-		%>
-		<p>e = \( \frac{<%= @total_distance %> - <%= section.length %>}{<%= @total_points_calc %>} \) = <%= error %></p>
+		= <%= total_distance%>
+	</p>
+	<p>
+	\( <%= section.name %>= \) <%= section.length %>
+	</p>
+	<p>e = \( \frac{<%= total_distance %> - <%= section.length %>}{<%= @total_points_calc %>} \) = <%= @errors[sindex] %></p>
 <% end %>
+

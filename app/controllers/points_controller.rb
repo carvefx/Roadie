@@ -5,8 +5,11 @@ class PointsController < ApplicationController
   def calculate
     @points = Point.all
     @sections = Section.all
-    km = 0
-    km_c = 0
+    @errors = Hash.new
+    @total_distances = Hash.new
+    @total_points_sections = Hash.new
+    km, km_c = 0, 0
+    
     # loop through all the points
     @points.each do |point|
     
@@ -22,28 +25,30 @@ class PointsController < ApplicationController
         end
       end
       
+        
+      
         # calculate the current kilometric position
         
-           km += point.distance
-           point.kilometric_position = '0+' + km.to_s    
+        km += point.distance
+        point.kilometric_position = '0+' + km.to_s    
         
        
         # calculate the corrected kilometric position
         
-            error = point.distance_corrected - point.distance
-            km_c = km
-            km_c += error
-            point.kilometric_position_corrected = '0+' + km_c.to_s
-  
+        error = point.distance_corrected - point.distance
+        km_c = km
+        km_c += error
+        point.kilometric_position_corrected = '0+' + km_c.to_s
         
-      # save to the database      
-      point.save
+        
+        # save to the database      
+        point.save
     end
     
     
 
 
-    @sections.each do |section|
+    @sections.each_with_index do |section, sindex|
       
       section_points_number = section.points.count - 1
       section_length = section.length
@@ -54,24 +59,35 @@ class PointsController < ApplicationController
         total_distance += point.distance
       end
       
+      # save total distances for later use
+      @total_distances[sindex] = total_distance
+      
       # calculate total error for a section
       total_error = total_distance - section_length
       
+      # calculate error for each section
+      error = total_error / section_points_number
+      error = (error * 10**2).round.to_f / 10**2
+            
+      # save errors for later use
+      @errors[sindex] = error      
+      
+      # calculate total number of points
+      total_points_calc = section.points.count - 1
+      
+      # save total number of points for later use
+      @total_points_sections[sindex] = total_points_calc
+      
       section.points.each_with_index do |point, index| 
           
-          if point.distance_corrected.nil?          	    
-    	      
-    	      
-    	      # calculate error for each point
-    	      error = total_error / section_points_number
-    	      error = (error * 10**2).round.to_f / 10**2
+          if point.distance_corrected.nil?      
     	        	    
     	      # construct final variable
       	    point.distance_corrected = point.distance + error
       	    
       	    # exclude starting and final points for error calculation    	      
     	      if index.eql? 0 or point.name.eql? "A" or point.name.eql? "B"
-    	        point.distance_corrected = point.distance
+    	        point.distance_correcteded = point.distance
     	      end
     	      
     	      # save to database
